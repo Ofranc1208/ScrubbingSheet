@@ -1,0 +1,62 @@
+# Data Scrubber Project - Directory Structure
+
+## Root Files
+- package.json - Project dependencies
+- tsconfig.json - TypeScript configuration
+- next.config.js - Next.js configuration
+- tailwind.config.js - Tailwind CSS configuration
+- postcss.config.js - PostCSS configuration
+- directory-tree.txt - This file (project structure reference)
+
+## /app (Next.js App Router)
+- layout.tsx - Root layout with metadata
+- globals.css - Global styles and Tailwind directives
+- page.tsx - Main Data Scrubber page (orchestrator)
+
+## /components
+- index.ts - Component exports
+- Sidebar.tsx - Left sidebar with actions and progress
+- OrganizedDataSection.tsx - Tab orchestrator for organized data
+- CutPasteSection.tsx - Raw data input and preview area
+
+### /components/organized-data
+- index.ts - Tab component exports
+- ContactFieldsTab.tsx - Client info and address fields (with SSN toggle)
+- PricingFieldsTab.tsx - Pricing fields (with date calculations and annual increase calculator)
+
+## /utils
+- index.ts - Utility exports
+- dateCalculations.ts - Age, payment date, and percentage calculations
+- accessDataParser.ts - Orchestrator for Access database parsing
+
+### /utils/parsers (Specialized Parsers)
+- index.ts - Parser exports
+- types.ts - Shared interfaces (ExtractedData, PhoneEntry)
+- clientInfoParser.ts - CRM ID, name, SSN, DOB, gender extraction
+- contactParser.ts - Phone numbers (3) and email extraction
+- addressParser.ts - Street, city, state, ZIP extraction
+- insuranceParser.ts - Insurance company name extraction
+- paymentParser.ts - LCP amount, frequency, annual increase calculation
+
+## Key Features
+1. **Intelligent Parsing**: Automatically detects and parses raw Access database format
+2. **Auto-Population**: Maps extracted data to correct fields
+3. **LCP Payment Extraction**: Extracts available LCP payments (not sold payments)
+4. **Auto Annual Increase**: Calculates percentage increase from payment changes
+5. **Insurance Name Cleaning**: Removes prefixes like "click button to verify"
+6. **Date Calculations**: Auto-calculates age, payment start/end dates based on business rules
+7. **Annual Increase Calculator**: Mini-calculator for manual percentage calculations
+8. **SSN Toggle**: Secure visibility toggle for sensitive data
+9. **Full Preview**: Shows all extracted fields in preview (no truncation)
+10. **High-Volume Processing**: "Complete & Next" workflow for 500-600 records
+11. **Excel Export**: Export all completed records to Excel file
+
+## Data Flow
+1. Paste raw Access database text → Cut & Paste Section
+2. Click "Parse Data" → Intelligent parser extracts fields
+3. Click "Process & Organize" → Auto-populate Contact Info and Pricing Info tabs
+4. Review/edit fields → Make corrections as needed
+5. Click "Complete & Next" → Save record and clear for next entry
+6. Repeat for all records
+7. Click "Export" → Download Excel file with all records
+
