@@ -17,13 +17,16 @@ export function usePaymentCalculations(
   }, [])
 
   // Auto-calculate payment end date when age or start date changes
+  // Only calculate if end date is not already set (to preserve parser-calculated dates)
   useEffect(() => {
     const age = Number(currentRecord?.age)
     const startDate = currentRecord?.paymentStartDate
+    const existingEndDate = currentRecord?.paymentEndDate
 
-    if (age > 0 && startDate) {
+    // Only calculate if we don't already have an end date from the parser
+    if (age > 0 && startDate && !existingEndDate) {
       const endDate = calculatePaymentEndDate(age, startDate)
-      if (endDate && endDate !== currentRecord?.paymentEndDate) {
+      if (endDate) {
         onFieldChange('paymentEndDate', endDate)
       }
     }
