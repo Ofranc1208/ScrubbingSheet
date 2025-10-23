@@ -4,7 +4,7 @@
 // Main table structure with headers and rows
 
 import { PricingTableRow } from './PricingTableRow'
-import type { PricingRow, TableColumn } from '../types'
+import type { PricingRow, TableColumn } from './types'
 
 interface PricingTableProps {
   rows: PricingRow[]

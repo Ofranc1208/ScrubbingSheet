@@ -16,7 +16,7 @@ export function isNoOffer(row: PricingRow): boolean {
  */
 export function isFieldValid(value: string, required: boolean = false): boolean {
   if (!required) return true
-  return value && value.trim() !== ''
+  return !!(value && value.trim() !== '')
 }
 
 /**
