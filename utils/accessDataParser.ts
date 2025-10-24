@@ -16,7 +16,7 @@ import {
   parseInsurance,
   parsePayment
 } from './parsers'
-import { calculateAge, calculatePaymentEndDate } from './dateCalculations'
+import { calculateAge, calculatePaymentEndDateFromToday } from './dateCalculations'
 
 // Re-export ExtractedData for external use
 export type { ExtractedData } from './parsers'
@@ -50,17 +50,9 @@ export function parseAccessData(rawText: string): ExtractedData | null {
   // This is INDEPENDENT of when payments start
   // Always calculate, even if DOB is missing (will default to age 50)
   const age = calculateAge(extracted.dob || '')
-  const today = new Date()
 
-  // Calculate years until age 75
-  const yearsUntil75 = 75 - age
-
-  // Term cannot exceed 30 years OR age 75, whichever comes first
-  const termYears = Math.min(30, yearsUntil75)
-
-  // End Date = Today + term years
-  const endDate = new Date(today.getFullYear() + termYears, today.getMonth(), today.getDate())
-  extracted.paymentEndDate = `${endDate.getMonth() + 1}/${endDate.getDate()}/${endDate.getFullYear()}`
+  // Use the centralized function that calculates from TODAY
+  extracted.paymentEndDate = calculatePaymentEndDateFromToday(age)
 
   // Also set the age field for display purposes
   extracted.age = age.toString()

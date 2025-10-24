@@ -21,8 +21,8 @@ export function PricingFormFields({
     { key: 'insuranceCompany', label: 'Insurance Company', placeholder: 'Enter insurance company', type: 'text', readOnly: false },
     { key: 'typeOfPayment', label: 'Payment Type', placeholder: 'LCP/Guaranteed', type: 'text', readOnly: false },
     { key: 'paymentFrequency', label: 'Frequency', placeholder: 'Monthly/Annual', type: 'text', readOnly: false },
-    { key: 'paymentStartDate', label: 'Start Date', placeholder: 'Auto-calculated', type: 'text', readOnly: true },
-    { key: 'paymentEndDate', label: 'End Date', placeholder: 'Auto-calculated', type: 'text', readOnly: true },
+    { key: 'paymentStartDate', label: 'Start Date', placeholder: 'MM/DD/YYYY', type: 'text', readOnly: false },
+    { key: 'paymentEndDate', label: 'End Date', placeholder: 'MM/DD/YYYY', type: 'text', readOnly: false },
     { key: 'paymentAmount', label: 'Amount', placeholder: 'Enter amount', type: 'number', readOnly: false },
     { key: 'annualIncrease', label: 'Annual Increase %', placeholder: '0', type: 'number', readOnly: false }
   ]

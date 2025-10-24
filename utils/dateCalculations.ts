@@ -128,6 +128,33 @@ export function calculateAnnualIncreasePercentage(oldAmount: string | number, ne
 }
 
 /**
+ * Calculate payment end date from TODAY (not from start date)
+ * This matches the business rule: End Date = TODAY + MIN(30 years, 75 - age)
+ * @param age - Current age in years
+ * @returns Payment end date in MM/DD/YYYY format
+ */
+export function calculatePaymentEndDateFromToday(age: number): string {
+  if (age <= 0) return ''
+
+  try {
+    const today = new Date()
+
+    // Calculate years until age 75
+    const yearsUntil75 = 75 - age
+
+    // Term cannot exceed 30 years OR age 75, whichever comes first
+    const termYears = Math.min(30, Math.max(0, yearsUntil75))
+
+    // End Date = Today + term years
+    const endDate = new Date(today.getFullYear() + termYears, today.getMonth(), today.getDate())
+
+    return formatDate(endDate)
+  } catch (error) {
+    return ''
+  }
+}
+
+/**
  * Calculate all payment-related dates and info
  * @param dob - Date of birth in MM/DD/YYYY format
  * @returns Object with age, start date, end date, and term length
@@ -136,8 +163,8 @@ export function calculatePaymentInfo(dob: string) {
   const age = calculateAge(dob)
   const startDate = calculatePaymentStartDate()
   const maxTerm = calculateMaxTerm(age)
-  const endDate = calculatePaymentEndDate(age, startDate)
-  
+  const endDate = calculatePaymentEndDateFromToday(age)
+
   return {
     age,
     startDate,

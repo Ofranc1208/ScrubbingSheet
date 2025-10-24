@@ -58,11 +58,38 @@ export class ExportService {
       const ws = XLSX.utils.aoa_to_sheet(wsData)
       const wb = XLSX.utils.book_new()
       XLSX.utils.book_append_sheet(wb, ws, 'Scrubbed Data')
-      XLSX.writeFile(wb, 'scrubbed-data.xlsx')
+
+      // Create binary data and trigger browser download
+      const wbBinary = XLSX.write(wb, { type: 'binary', bookType: 'xlsx' })
+      const blob = new Blob([binaryStringToArrayBuffer(wbBinary)], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      })
+
+      // Create download link and trigger download
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = getExportFileName()
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
     } catch (error) {
       console.error('Export failed:', error)
       alert('Export failed. Please try again.')
     }
+  }
+
+  /**
+   * Convert binary string to ArrayBuffer
+   */
+  private static binaryStringToArrayBuffer(binary: string): ArrayBuffer {
+    const buffer = new ArrayBuffer(binary.length)
+    const view = new Uint8Array(buffer)
+    for (let i = 0; i < binary.length; i++) {
+      view[i] = binary.charCodeAt(i) & 0xFF
+    }
+    return buffer
   }
 
   /**

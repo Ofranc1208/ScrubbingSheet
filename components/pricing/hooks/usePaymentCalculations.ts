@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { calculatePaymentStartDate, calculatePaymentEndDate } from '../../../utils/dateCalculations'
+import { calculatePaymentStartDate, calculatePaymentEndDateFromToday } from '../../../utils/dateCalculations'
 
 /**
  * Hook for managing payment calculations and auto-updates
@@ -16,18 +16,17 @@ export function usePaymentCalculations(
     }
   }, [])
 
-  // Auto-calculate payment end date when age or start date changes
+  // Auto-calculate payment end date when age changes (FROM TODAY, not start date)
   useEffect(() => {
     const age = Number(currentRecord?.age)
-    const startDate = currentRecord?.paymentStartDate
 
-    if (age > 0 && startDate) {
-      const endDate = calculatePaymentEndDate(age, startDate)
+    if (age > 0) {
+      const endDate = calculatePaymentEndDateFromToday(age)
       if (endDate && endDate !== currentRecord?.paymentEndDate) {
         onFieldChange('paymentEndDate', endDate)
       }
     }
-  }, [currentRecord?.age, currentRecord?.paymentStartDate])
+  }, [currentRecord?.age]) // Removed paymentStartDate dependency since end date is independent of start date
 
   return {
     // Could return calculated values or calculation status if needed
