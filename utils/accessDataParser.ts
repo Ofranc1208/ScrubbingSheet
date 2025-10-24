@@ -105,7 +105,7 @@ export function formatExtractedDataForPreview(data: ExtractedData | null): strin
     ['Phone 2', data.phone2 || ''],
     ['Phone 3', data.phone3 || ''],
     ['Email', data.email || ''],
-    ['Address', data.streetAddress1 || ''],
+    ['Address', data.fullAddress || data.streetAddress1 || ''],
     ['City', data.city || ''],
     ['State', data.state || ''],
     ['ZIP', data.zipCode || ''],

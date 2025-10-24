@@ -110,6 +110,12 @@ export class DataProcessingService {
         newRecord.streetAddress1 = value
         newRecord.fullAddress = value
       }
+      else if (fieldLower.includes('street') && fieldLower.includes('address') && fieldLower.includes('1')) {
+        newRecord.streetAddress1 = value
+      }
+      else if (fieldLower.includes('street') && fieldLower.includes('address') && fieldLower.includes('2')) {
+        newRecord.streetAddress2 = value
+      }
       else if (fieldLower.includes('city')) newRecord.city = value
       else if (fieldLower.includes('state')) newRecord.state = value
       else if (fieldLower.includes('zip')) newRecord.zipCode = value
@@ -119,6 +125,36 @@ export class DataProcessingService {
       else if (fieldLower.includes('frequency')) newRecord.paymentFrequency = value
       else if (fieldLower.includes('annual increase')) newRecord.annualIncrease = value
     })
+
+    // Construct fullAddress from individual components if not already set
+    if (!newRecord.fullAddress) {
+      const addressParts = [
+        newRecord.streetAddress1,
+        newRecord.streetAddress2,
+        newRecord.city,
+        newRecord.state,
+        newRecord.zipCode
+      ].filter(Boolean)
+
+      if (addressParts.length > 0) {
+        newRecord.fullAddress = addressParts.join(', ')
+      }
+    }
+
+    // Also update fullAddress if individual components exist but fullAddress doesn't match
+    else {
+      const constructedAddress = [
+        newRecord.streetAddress1,
+        newRecord.streetAddress2,
+        newRecord.city,
+        newRecord.state,
+        newRecord.zipCode
+      ].filter(Boolean).join(', ')
+
+      if (constructedAddress && constructedAddress !== newRecord.fullAddress) {
+        newRecord.fullAddress = constructedAddress
+      }
+    }
 
     return newRecord as PricingRecord
   }
