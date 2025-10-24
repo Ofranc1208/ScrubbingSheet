@@ -61,7 +61,7 @@ export class ExportService {
 
       // Create binary data and trigger browser download
       const wbBinary = XLSX.write(wb, { type: 'binary', bookType: 'xlsx' })
-      const blob = new Blob([binaryStringToArrayBuffer(wbBinary)], {
+      const blob = new Blob([ExportService.binaryStringToArrayBuffer(wbBinary)], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
       })
 
@@ -69,7 +69,7 @@ export class ExportService {
       const url = URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = getExportFileName()
+      link.download = ExportService.getExportFileName()
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
